@@ -18,3 +18,6 @@ type SemesterList models.SemesterList
 // Courses is a model for representing a list of courses from the portal. This model
 // should most often be used to hold all courses for a certain semester.
 type Courses models.Courses
+
+// Profile is a model for representing a user's Amizone profile.
+type Profile models.Profile

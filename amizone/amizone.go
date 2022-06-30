@@ -23,6 +23,7 @@ const (
 	examScheduleEndpoint     = "/Examination/ExamSchedule"
 	currentCoursesEndpoint   = "/Academics/MyCourses"
 	coursesEndpoint          = "/CourseListSemWise"
+	profileEndpoint          = "/IDCard"
 
 	scheduleEndpointTimeFormat = "2006-01-02"
 
@@ -277,4 +278,21 @@ func (a *Client) GetCurrentCourses() (Courses, error) {
 	}
 
 	return Courses(courses), nil
+}
+
+// GetProfile retrieves, parsed and returns the current user's profile from Amizone.
+func (a *Client) GetProfile() (*Profile, error) {
+	response, err := a.doRequest(true, http.MethodGet, profileEndpoint, nil)
+	if err != nil {
+		klog.Warningf("request (get profile): %s", err.Error())
+		return nil, errors.New(ErrFailedToVisitPage)
+	}
+
+	profile, err := parse.Profile(response.Body)
+	if err != nil {
+		klog.Errorf("parse (profile): %s", err.Error())
+		return nil, errors.New(ErrFailedToParsePage)
+	}
+
+	return (*Profile)(profile), nil
 }
